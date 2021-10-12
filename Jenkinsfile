@@ -26,5 +26,17 @@ pipeline {
         sh 'yarn lint:test'
       }
     }
+
+    stage('Sonarqube Analysis') {
+      environment {
+        scannerHome = tool 'sonarqube-scanner'
+      }
+
+      steps {
+        withSonarQubeEnv(installationName: 'sonarqube') {
+          sh '$scannerHome/bin/sonar-scanner'
+        }
+      }
+    }
   }
 }
